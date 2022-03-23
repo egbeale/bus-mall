@@ -3,25 +3,25 @@
 // ************************* GLOBAL VARIABLES ***************************
 
 let productArray = [];
-let votes = 25;
+let votingRounds = 25;
 
 // ***************************** DOM REFERENCES *****************************
 
-let button = document.getElementById('result-button')
-let resultList = document.getElementById('result-list');
-
 let imgContainer = document.getElementById('img-container');
-let img1 = document.getElementById('img1');
-let img2 = document.getElementById('img2');
-let img3 = document.getElementById('img3');
+let img1 = document.getElementById('img-1');
+let img2 = document.getElementById('img-2');
+let img3 = document.getElementById('img-3');
+
+let resultsBtn = document.getElementById('show-results-btn');
+let resultsList = document.getElementById('show-result-list');
 
 // ************************* CONSTRUCTOR *****************************
 
 function Product(name, fileExtension = 'jpg') {
-  this.name = name;
+  this.productName = name;
   this.image = `images/${name}.${fileExtension}`;
   this.views = 0;
-  this.votes = 0;
+  this.clicks = 0;
 
   productArray.push(this);
 }
@@ -51,72 +51,77 @@ new Product('wine-glass');
 
 // ************************* HELPER FUNCTIONS *****************************
 
-function getRandomProduct(){
+function getRandomIndex(){
   return Math.floor(Math.random() * productArray.length);
+  // from w3resource.com
 
 }
 
 function renderImages(){
-  let prodIndex1 = getRandomProduct();
-  let prodIndex2 = getRandomProduct();
-  let prodIndex3 = getRandomProduct();
 
+  let prodIndex1 = getRandomIndex();
+  let prodIndex2 = getRandomIndex();
+  let prodIndex3 = getRandomIndex();
+
+  //make sure no repeat images
   while (prodIndex1 === prodIndex2 || prodIndex1 === prodIndex3){
-    prodIndex1 = getRandomProduct();
+    prodIndex1 = getRandomIndex();
   }
-
   while (prodIndex2 === prodIndex3){
-    prodIndex2 = getRandomProduct();
+    prodIndex2 = getRandomIndex();
   }
 
   //**** RENDER IMGS ON SCREEN **** */
   img1.src = productArray[prodIndex1].image;
-  img1.alt = productArray[prodIndex1].name;
+  img1.alt = productArray[prodIndex1].productName;
   productArray[prodIndex1].views++;
 
   img2.src = productArray[prodIndex2].image;
-  img2.alt = productArray[prodIndex2].name;
+  img2.alt = productArray[prodIndex2].productName;
   productArray[prodIndex2].views++;
 
   img3.src = productArray[prodIndex3].image;
-  img3.alt = productArray[prodIndex3].name;
+  img3.alt = productArray[prodIndex3].productName;
   productArray[prodIndex3].views++;
 
 }
 
 renderImages();
 
-// ***************************** EVENT HANDLEERS *****************************
+// ************************ EVENT HANDLEERS ************************
 
-function getClick(event){
+function handleClick(event){
+
   let imgClicked = event.target.alt;
 
   for(let i = 0; i < productArray.length; i++){
-    if(productArray[i].name === imgClicked){
+    if(imgClicked === productArray[i].productName){
       productArray[i].clicks++;
     }
   }
+  //rerender 2 new imgs ??????????
 
-  if(votes === 0) {
-    imgContainer.removeEventListener('click', getClick);
+  votingRounds--;
+  if(votingRounds === 0){
+    imgContainer.removeEventListener('click', handleClick);
     return;
   }
-
   renderImages();
 }
 
-function getSeeResults(){
-  if(votes === 0){
+function handleShowResults(){
+  if(votingRounds === 0){
     for(let i = 0; i < productArray.length; i++){
-      let liElem = document.createElement('li');
+      let li = document.createElement('li');
 
-      liElem.textContent = `${productArray[i].name} was viewed ${productArray[i].views} times and chosen ${productArray[i].votes} times.`;
+      li.textContent = `${productArray[i].productName} was viewed ${productArray[i].views} times and clicked on ${productArray[i].clicks} times.`;
+      resultsList.appendChild(li);
     }
   }
-  button.removeEventListener('click', getSeeResults);
+  // resultsBtn.removeEventListener('click', handleShowResults);
 }
 
-// ***************************** EVENT LISTENERS *****************************
+// *********************** EVENT LISTENERS ************************
 
-imgContainer.addEventListener('click', getClick);
-button.addEventListener('click', getSeeResults);
+imgContainer.addEventListener('click', handleClick);
+resultsBtn.addEventListener('click', handleShowResults);
