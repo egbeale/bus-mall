@@ -1,0 +1,37 @@
+body  {
+  background: linear-gradient(0.25turn, #7ec4c9, #e5d9eb, #d596e2);
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+}
+
+header {
+  background-color: ivory;
+  padding: 30px;
+}
+
+h1 {
+  color: #9ce0d7;
+  font-family: 'Faster One', cursive;
+  font-size: 6em;
+  letter-spacing: .3em;
+  text-shadow: -10px 10px rgb(218, 160, 224);
+}
+
+h2 {
+  padding: 20px;
+}
+
+#img-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  margin: 20px 40px;
+}
+
+div > img {
+  max-width: 300px;
+  max-height: 300px;
+  margin: auto;
+  border-radius: 20%;
+  border: 10px solid white;
+}
