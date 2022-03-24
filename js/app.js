@@ -113,20 +113,20 @@ function handleShowResults(){
           label: '# of Votes',
           data: productVotes,
           backgroundColor: [
-            'blue'
+            'olive'
           ],
           borderColor: [
-            'blue'
+            'olive'
           ],
           borderWidth: 1
         },
         { label:'# of Views',
           data: productViews,
           backgroundColor: [
-            'green'
+            'royalblue'
           ],
           borderColor: [
-            'green'
+            'royalblue'
           ],
           borderWidth: 1
         }]
